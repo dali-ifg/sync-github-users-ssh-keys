@@ -1,0 +1,31 @@
+{
+  "name": "sync-github-users-ssh-keys",
+  "version": "0.0.0",
+  "description": "Utility to synchronize the ssh keys of users from a specific team to the ssh authorized keys file",
+  "main": "script.js",
+  "dependencies": {
+    "github": "~0.1.16",
+    "lodash": "~2.4.1",
+    "async": "~0.7.0",
+    "nopt": "~2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ifeelgoods/sync-github-users-ssh-keys"
+  },
+  "keywords": [
+    "ssh",
+    "github",
+    "utility"
+  ],
+  "author": "Dali Kilani (Ifeelgoods)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ifeelgoods/sync-github-users-ssh-keys/issues"
+  },
+  "homepage": "https://github.com/ifeelgoods/sync-github-users-ssh-keys"
+}
