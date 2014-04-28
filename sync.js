@@ -16,9 +16,6 @@ var knownOpts = {
 
 var parsed_opts = nopt(knownOpts, {}, process.argv, 2);
 
-var file = fs.createWriteStream(parsed_opts.output || 'authorized_keys');
-file.on('error', function(err) { console.log('Hit an error writing to file!' + err); });
-
 var github = new GitHubApi({
     // required
     version: "3.0.0",
@@ -41,6 +38,9 @@ if (parsed_opts['list-teams']) {
     console.log(res);
   });
 } else {
+  var file = fs.createWriteStream(parsed_opts.output);
+  file.on('error', function(err) { console.log('Hit an error writing to file!' + err); });
+
     github.orgs.getTeamMembers({
       id: parsed_opts['team-id']
     }, function(err, res) {
