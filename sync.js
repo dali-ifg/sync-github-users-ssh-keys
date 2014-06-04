@@ -35,7 +35,11 @@ if (parsed_opts['list-teams']) {
   github.orgs.getTeams({
     org: parsed_opts.org
   }, function(err, res) {
-    console.log(res);
+    if(err) {
+      console.log(err);
+    } else {
+      console.log(res);
+    }
   });
 } else {
   var file = fs.createWriteStream(parsed_opts.output);
@@ -55,7 +59,7 @@ if (parsed_opts['list-teams']) {
             github.user.getKeysFromUser({
               user : login,
             }, function (err, res) {
-              cb(null,_.pluck(res, 'key'));
+              cb(null, _.map(_.pluck(res, 'key'), function(key) {return {key : key,login : login};}));
             });
           };
         });
@@ -65,7 +69,15 @@ if (parsed_opts['list-teams']) {
         async.parallel(array_fn, function(err, results) {
           users_public_ssh_keys = _.flatten(results);
           if (parsed_opts.debug) console.log(users_public_ssh_keys);
-          users_public_ssh_keys.forEach(function(key) { file.write( key + '\n');});
+          users_public_ssh_keys.forEach(function(entry) {
+            if (parsed_opts.debug) console.log(entry);
+            var key = entry.key;
+            if (parsed_opts['per-user-env']) {
+              key = 'environment="SSH_USER=' + entry.login + '" ' + entry.key;
+            }
+            key = key + ' ' + entry.login;
+            file.write( key + '\n');
+          });
           file.end();
 
         });
